@@ -1,13 +1,16 @@
 
 function linkedList(node) {
-  // THEORETICALLY: the root node should contain the whole list, no idea what this is really gunna do tho.
   return {
-    value: node.value,
-    leftNode: node.leftNode,
-    rightNode: node.rightNode,
-    // needs some functions too.
+    node,
     append(value) {
       // add new node with value to end of list
+      // i.e. change next pointer of last element from null, to the point of nodeClass(number)
+      
+      let currentNode = node;
+      while (currentNode.next) {
+        currentNode = currentNode.next;
+      }
+      currentNode.next = nodeClass(value);
     },
     prepend(value) {
       // add new node with value to beginning 
@@ -35,50 +38,48 @@ function linkedList(node) {
       // returns the index of the node containing said value
       // returns null if not found
     },
-    toString(linkedList) {
+    toString() {
       // returns a stringified verstion of linkedList like so;
       // ( value ) -> ( value ) -> ( value ) -> null
+
+      let result = '';
+      let currentNode = node;
+      while (currentNode.next) {
+        result = result + `${currentNode.value} -> `;
+        currentNode = currentNode.next;
+      }
+      result = result + `${currentNode.value} -> null`
+      return result
     }
   }
 }
 
-function node(value, leftNode, rightNode) {
+function nodeClass(value, next=null) {
   return {
     value,
-    leftNode,
-    rightNode
+    next
   }
 }
 
+// let node1 = node(1);
+// let node2 = node(2);
+// let node3 = node(3);
+// node1.next = node2;
+// node2.next = node3;
+let node1 = nodeClass(1, nodeClass(2, nodeClass(3)))
 
-// EXAMPLE CASE
+let x = linkedList(node1);
+// console.log(x.node.next.next)
+console.log(x.toString());
+x.append(4);
+x.append(5);
+x.append(6);
+console.log(x.toString());
+// x.append(4)
 
-// [4,2,7,6,1,3,5]
 
-//            4
-//         /     \
-//       2         7
-//     /   \     /   \
-//    1     3   6
-//             /
-//            5
+// it is just an infinite array
 
-// // for this example
-// node(4) = node(2), 4, node(7)
-//     node(2) = node(1), 2, node(3)
-//       node(1) = null, 1, null
-//       return
-//       node(3) = null, 3, null
-//       return
-//     node(7) = node(6), 7, null
-//       node(6) = node(5), 6, null
-//         node(5) = null, 5, null
+// node(1) -> node(2) -> node(3) -> null
 
-// compare desired value to root value
-//   if value == root, return;
-//   if value < root;
-//     explore left node;
-//   if value > root;
-//     explore right node;
-//   if leftNode == null && rightNode == null;
-//     return 'element does not exist'
+// to append, edit last node's next attr, make it point to new node
