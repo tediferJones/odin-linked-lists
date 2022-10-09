@@ -108,6 +108,58 @@ function linkedList(node) {
         currentNode = currentNode.next;
       }
       return result + 'null';
+    },
+    insertAt(value, index) {
+      let currentNode = node;
+      let counter = 0;
+
+      if (index === 0) {
+        this.prepend(value);
+      } else if (index > this.size()) {
+        return 'Index is outside the scope of this array';
+      } else if (index < 0) {
+        if (index * -1 > this.size()) {
+          return 'Index is outside the scope of this array';
+        } else if (index * -1 === this.size()) {
+          console.log('append negative')
+          return this.prepend(value);
+        } else if (index * -1 < this.size()) {
+          console.log('insert negative')
+          return this.insertAt(value, index + this.size() + 1)
+        }
+      }
+
+      while (counter < index - 1) {
+        currentNode = currentNode.next;
+        counter++;
+      }
+      let temp = currentNode.next;
+      currentNode.next = nodeClass(value, temp);
+      return this.toString();
+    },
+    removeAt(index) {
+      // just make the index - 1 point to index + 1
+      let currentNode = node;
+      let counter = 0;
+
+      if (index === 0) {
+        node = currentNode.next;
+      } else if (index > this.size()) {
+        return 'Index is outside the scope of this array';
+      } else if (index < 0) {
+        if (index * -1 > this.size()) {
+          return 'Index is outside the scope of this array';
+        } else {
+          return this.removeAt(index + this.size());
+        }
+      }
+
+      while (counter < index - 1) {
+        currentNode = currentNode.next;
+        counter++;
+      }
+      currentNode.next = currentNode.next.next;
+      return this.toString();
     }
   }
 }
@@ -123,6 +175,7 @@ let node1 = nodeClass(1, nodeClass(2, nodeClass(3)));
 
 let x = linkedList(node1);
 
+console.log('Original Array: ' + x.toString());
 console.log('APPEND(4): ' + x.append(4));
 console.log('PREPEND(0): ' + x.prepend(0));
 console.log('PREPEND(7): ' + x.prepend(7));
@@ -140,5 +193,12 @@ console.log('CONTAINS(9): ' + x.contains(9));
 console.log('FIND(1): ' + x.find(1));
 console.log('FIND(9): ' + x.find(9));
 console.log('toString(): ' + x.toString());
+console.log('INSERTAT(29, 2): ' + x.insertAt(29, 2));
+console.log('INSERTAT(72, 7): ' + x.insertAt(72, 7));
+console.log('REMOVEAT(2): ' + x.removeAt(2));
+console.log('REMOVEAT(0): ' + x.removeAt(0));
+console.log('REMOVEAT(5): ' + x.removeAt(5));
+console.log('INSERTAT(77, -4): ' + x.insertAt(77, -4));
+console.log('REMOVEAT(-5): ' + x.removeAt(-5));
 
 // it is just an infinite array
